@@ -70,7 +70,7 @@ export class PositionMonitor {
 
             const apiKey = process.env.ARBISCAN_API_KEY;
             if (!apiKey) {
-                console.error('❌ ARBISCAN_API_KEY no configurada');
+                console.error('❌ ARBISCAN_API_KEY no configured');
                 return Array.from(this.addressesCache);
             }
 

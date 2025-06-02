@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "ts-node src/index.ts",
-    "deploy": "npx hardhat run scripts/deploy.ts --network arbitrum",
+    "deploy": "npx hardhat run scripts/deploy.ts --network pulse",
     "compile": "npx hardhat compile",
     "test": "npx hardhat test",
     "monitor": "ts-node scripts/monitor.ts",
@@ -23,6 +23,7 @@
   "license": "MIT",
   "dependencies": {
     "@aave/core-v3": "^1.17.2",
+    "@nomicfoundation/hardhat-ethers": "^3.0.8",
     "@openzeppelin/contracts": "^4.9.3",
     "axios": "^1.7.9",
     "dotenv": "^16.0.3",

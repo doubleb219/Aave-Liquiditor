@@ -25,6 +25,11 @@ const config: HardhatUserConfig = {
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
       chainId: 42161
     },
+    pulse: {
+      url: process.env.PULSE_RPC_URL || "",
+      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
+      chainId: 943
+    },
     hardhat: {
       forking: {
         url: process.env.ARBITRUM_RPC_URL || "",

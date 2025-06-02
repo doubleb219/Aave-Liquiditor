@@ -82,7 +82,7 @@ contract FlashLiquidator is FlashLoanSimpleReceiverBase {
         address asset,
         uint256 amount,
         uint256 premium,
-        address initiator,
+        address /* initiator */,
         bytes calldata params
     ) external override returns (bool) {
         // Decode liquidation parameters

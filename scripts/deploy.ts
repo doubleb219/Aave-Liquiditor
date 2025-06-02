@@ -1,10 +1,10 @@
 import { ethers } from "hardhat";
 
 async function main() {
-  console.log("🚀 Iniciando despliegue del contrato FlashLiquidator...");
+  console.log("🚀 Starting FlashLiquidator contract deployment...");
 
-  // Dirección del Pool Addresses Provider de Aave v3 en Arbitrum
-  const AAVE_POOL_ADDRESSES_PROVIDER = "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb";
+  // Aave v3 Pool Addresses Provider address on Arbitrum
+  const AAVE_POOL_ADDRESSES_PROVIDER = "0x0C1Bdb8fc6FaC25c762C434858aC00a7C2e9Cc64";
 
   const FlashLiquidator = await ethers.getContractFactory("FlashLiquidator");
   const flashLiquidator = await FlashLiquidator.deploy(AAVE_POOL_ADDRESSES_PROVIDER);
@@ -12,11 +12,11 @@ async function main() {
   await flashLiquidator.waitForDeployment();
 
   console.log(
-    `✅ FlashLiquidator desplegado en: ${await flashLiquidator.getAddress()}`
+    `✅ FlashLiquidator deployed in: ${await flashLiquidator.getAddress()}`
   );
 }
 
 main().catch((error) => {
-  console.error("❌ Error en el despliegue:", error);
+  console.error("❌ Deployment error:", error);
   process.exitCode = 1;
 }); 
