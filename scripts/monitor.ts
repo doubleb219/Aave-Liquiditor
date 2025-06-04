@@ -3,7 +3,7 @@ import { PositionMonitor } from '../src/monitor/positions';
 async function main() {
     const monitor = new PositionMonitor();
 
-    console.log('🔍 Starting position monitoring on Aave v3 (Arbitrum)...');
+    console.log('🔍 Starting position monitoring on Aave v3 (Pulse)...');
     console.log('⚙️ Configuration:');
     console.log(`   Min Health Factor: ${process.env.MIN_HEALTH_FACTOR || '1.1'}`);
     console.log(`   Min Profit USD: $${process.env.MIN_PROFIT_USD || '100'}`);

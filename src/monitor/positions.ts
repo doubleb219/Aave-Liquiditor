@@ -47,9 +47,9 @@ export class PositionMonitor {
     private reservesList: string[] | null;
 
     constructor() {
-        this.provider = new ethers.JsonRpcProvider(process.env.ARBITRUM_RPC_URL);
+        this.provider = new ethers.JsonRpcProvider(process.env.PULSE_RPC_URL);
         this.pool = new ethers.Contract(
-            process.env.AAVE_LENDING_POOL || '',
+            process.env.AAVE_POOL_ADDRESS || '',
             AAVE_POOL_ABI,
             this.provider
         );
@@ -73,27 +73,33 @@ export class PositionMonitor {
                 console.error('❌ ARBISCAN_API_KEY no configured');
                 return Array.from(this.addressesCache);
             }
-
             // Get the last 10,000 transactions from the Aave contract
-            const response = await axios.get(`https://api.arbiscan.io/api`, {
+            // const response = await axios.get(`https://api.arbiscan.io/api`, {
+            //     params: {
+            //         module: 'account',
+            //         action: 'txlist',
+            //         address: process.env.AAVE_POOL_ADDRESS,
+            //         startblock: 0,
+            //         endblock: 99999999,
+            //         page: 1,
+            //         offset: 10000,
+            //         sort: 'desc',
+            //         apikey: apiKey
+            //     }
+            // });
+            const response = await axios.get(`https://api.scan.v4.testnet.pulsechain.com/api/v2/addresses/${process.env.AAVE_POOL_ADDRESS}/transactions`, {
                 params: {
-                    module: 'account',
-                    action: 'txlist',
-                    address: process.env.AAVE_LENDING_POOL,
-                    startblock: 0,
-                    endblock: 99999999,
-                    page: 1,
-                    offset: 10000,
-                    sort: 'desc',
-                    apikey: apiKey
+                    filter: 'to | from'
+                },
+                headers: {
+                    'accept': 'application/json'
                 }
             });
-
-            if (response.data.status === '1' && response.data.result) {
+            if (response.status === 200 && response.data.items) {
                 // Extract unique addresses from transactions
                 const addresses = new Set<string>();
-                for (const tx of response.data.result) {
-                    addresses.add(tx.from.toLowerCase());
+                for (const tx of response.data.items) {
+                    addresses.add(tx.from.hash.toLowerCase());
                 }
 
                 this.addressesCache = addresses;
@@ -154,6 +160,7 @@ export class PositionMonitor {
     async findLiquidatablePositions(): Promise<Position[]> {
         try {
             const addresses = await this.getAddressesFromArbiscan();
+            console.log('addresses', addresses);
             const positions: Position[] = [];
 
             console.log(`🔍 Analyzing ${addresses.length} addresses...`);
@@ -161,6 +168,7 @@ export class PositionMonitor {
 
             for (const user of addresses) {
                 try {
+                    console.log('Checking user:', user);
                     const {
                         totalCollateralBase,
                         totalDebtBase,
@@ -168,6 +176,8 @@ export class PositionMonitor {
                     } = await this.pool.getUserAccountData(user);
 
                     const healthFactorNumber = parseFloat(ethers.formatUnits(healthFactor, 18));
+
+                    console.log('Health Factor:', healthFactorNumber);
 
                     if (healthFactorNumber >= this.minHealthFactor) continue;
 
@@ -204,6 +214,7 @@ export class PositionMonitor {
                     });
 
                     checked++;
+                    console.log('checked number', checked);
                     if (checked % 100 === 0) {
                         console.log(`✓ Analyzed ${checked}/${addresses.length} addresses`);
                     }

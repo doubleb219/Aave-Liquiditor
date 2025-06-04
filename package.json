@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "ts-node src/index.ts",
-    "deploy": "npx hardhat run scripts/deploy.ts --network pulse",
+    "deploy": "npx hardhat run scripts/deploy.ts --network sepolia",
     "compile": "npx hardhat compile",
     "test": "npx hardhat test",
     "monitor": "ts-node scripts/monitor.ts",
