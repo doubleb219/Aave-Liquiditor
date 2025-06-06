@@ -214,7 +214,6 @@ export class PositionMonitor {
                     });
 
                     checked++;
-                    console.log('checked number', checked);
                     if (checked % 100 === 0) {
                         console.log(`✓ Analyzed ${checked}/${addresses.length} addresses`);
                     }

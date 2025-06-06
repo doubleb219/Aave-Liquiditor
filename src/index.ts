@@ -11,7 +11,7 @@ async function main() {
         const provider = new ethers.JsonRpcProvider(process.env.ARBITRUM_RPC_URL);
         const wallet = new ethers.Wallet(process.env.PRIVATE_KEY || '', provider);
 
-        console.log('🚀 Starting Aave liquidation bot');
+        console.log('🚀 Starting Aave v3 liquidation bot');
         console.log('Bot address:', wallet.address);
 
         // Start position monitor
